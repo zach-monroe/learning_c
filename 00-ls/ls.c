@@ -6,6 +6,16 @@
 #include <time.h>
 #include <unistd.h>
 
+struct IntArray {
+  int *data;
+  int length;
+  int capacity;
+};
+
+IntArray IntArrayNew(int capacity) {
+
+}
+
 void reverse_sort(mode_t mode, char *str) {}
 
 void mode_string(mode_t mode, char *str) {
@@ -48,7 +58,7 @@ void print_long(const char *dir, const char *name) {
   mode_string(st.st_mode, modes);
 
   struct passwd *pw = getpwuid(st.st_uid);
-  struct group *gr = getgrgid(st.st_uid);
+  struct group *gr = getgrgid(st.st_gid);
   const char *user = pw ? pw->pw_name : "?";
   const char *group = gr ? gr->gr_name : "?";
 

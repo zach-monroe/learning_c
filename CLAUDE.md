@@ -46,7 +46,7 @@ One directory per exercise, with a number prefix, e.g.:
 ...
 ```
 
-`ls.c` currently sits at the repo root. Moving it into `00-ls/` is a good first chore.
+`ls.c` now lives in `00-ls/`.
 
 ## Curriculum
 
@@ -71,12 +71,17 @@ Update this section as exercises are finished, so future sessions know where thi
     to Zach as a hint to find himself; don't fix it for him.
   - The `reverse_sort` stub has a placeholder signature. It leads into Phase 1
     (store the entries in a dynamic array, then sort them).
+- **Phase 1 workbook:** `01-dynarray/WORKBOOK.md` (written 2026-11-08). Zach works
+  through Parts 1–2 first and sends `dynarray.h` for review. Claude writes
+  `test_dynarray.c` only after the header is agreed on.
 
-## Preferences (still to decide; ask Zach and record the answers here)
+## Preferences
 
-- Main book: *Modern C* (Gustedt), *K&R*, Beej's Guide, or none (learn from docs
-  as needed)?
-- Tests: should Claude write a test harness for each exercise, or should Zach write
-  his own?
+- **Main book (decided):** *Beej's Guide to C Programming* (free, beej.us/guide/bgc/).
+  Point Zach to its chapters by name. Use *Modern C* (Gustedt, free) only as an
+  optional deeper reference.
+- **Tests (decided):** Claude writes the test harness for each exercise. Zach writes
+  the implementation that has to pass it. The tests must not give away the
+  implementation: test behavior through the public API, not internals.
 - **Pace (decided):** 5–10 hours a week. Size each exercise to fit in a few sessions,
   so roughly 1–3 weeks per phase. Prefer small, finishable chunks over large specs.
