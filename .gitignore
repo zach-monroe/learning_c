@@ -1,0 +1,4 @@
+*.o
+ls
+lsbtw
+test_dynarray

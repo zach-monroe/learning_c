@@ -4,6 +4,10 @@ This repo is where Zach learns C and DSA together. Zach already knows Python and
 (basic to intermediate concepts). Each phase teaches C by building a data structure
 that C doesn't provide.
 
+**C level: beginner.** `00-ls/ls.c` was built by following a tutorial, so it overstates
+what Zach can write on his own. Teach C syntax with a small worked example on an
+*unrelated* type, then have him apply it. Keep steps small.
+
 ## Claude's role: tutor, not implementer
 
 **Zach writes the code. Claude guides.** This is the most important rule in this file.
@@ -30,7 +34,9 @@ that C doesn't provide.
 ## Toolchain
 
 - Compilers: `gcc` and `clang` are both installed. Default flags:
-  `-std=c17 -Wall -Wextra -Wpedantic -g -fsanitize=address,undefined`
+  `-std=gnu17 -Wall -Wextra -Wpedantic -g -fsanitize=address,undefined`
+  (Zach chose `gnu17` over strict `c17` on 2026-11-09: strict mode hides POSIX
+  functions like `lstat`, `getopt`, and `strdup` unless you define a feature test macro.)
 - Debugging: `gdb`. Install `valgrind` if it's missing (`pacman -S valgrind`).
 - Every exercise gets its own small `Makefile`, written by Zach.
 - Platform: Arch Linux (POSIX APIs like `dirent.h` and `getopt` are fine to use).
@@ -65,15 +71,30 @@ One directory per exercise, with a number prefix, e.g.:
 
 Update this section as exercises are finished, so future sessions know where things stand.
 
-- **Current phase:** 0
+- **Current phase:** 2 (Phase 1 wrapped 2026-11-22 at Zach's request: dynarray done and
+  tested, `-t` works in `ls`; name sort/`-r` left open). Next: `02-linkedlist/WORKBOOK.md` (written 2026-11-23; singly linked list of ints, bare `struct node *head` to force `**`).
 - **Open items in `ls.c`:**
-  - `print_long` passes the wrong field of `struct stat` to `getgrgid`. This was given
-    to Zach as a hint to find himself; don't fix it for him.
   - The `reverse_sort` stub has a placeholder signature. It leads into Phase 1
     (store the entries in a dynamic array, then sort them).
-- **Phase 1 workbook:** `01-dynarray/WORKBOOK.md` (written 2026-11-08). Zach works
-  through Parts 1–2 first and sends `dynarray.h` for review. Claude writes
-  `test_dynarray.c` only after the header is agreed on.
+  - 2026-11-12: `ls.c` now fills a `DynArray` of `struct entry` (lstat on
+    `path/name`), and `print_long(const struct entry *)` only formats.
+  - 2026-11-13: fill and print are split (`fill()` + a print loop in `main`).
+    Review found: double `closedir`/`DynArrayFree` when lstat fails (`fill` frees
+    them, then `main` frees them again; repro: a dir with r but no x permission),
+    an unused, uninitialized `direntry` param (gcc warning), `fill`'s return value
+    ignored, `main` reading `da.len`/`da.dt` directly instead of using the API, and
+    lstat running before the hidden-file check. Still open: unchecked
+    `DynArrayInit`/`DynArrayAdd` returns, NULL `localtime`. Next after fixes: `-t` sort.
+  - 2026-11-22: double-free fixed. `-t` works via Zach's gnome-style insertion sort
+    (`insertion_sort` + `bigger`, swaps on -1, stable, ties return 0). Order matches
+    real `ls -t` except for files with identical mtimes (no name tie-break). Zach
+    got tired of the tie-break and chose to stop there. Not started: name sort for
+    plain `ls`, `-r`. Quicksort is commented out for Phase 3.
+- **Phase 1 workbook:** `01-dynarray/WORKBOOK.md`. Parts 1–2 done: Zach's
+  `dynarray.h` is agreed on (2026-11-10), and Claude wrote `test_dynarray.c` against it.
+  Part 3: `dynarray.c` is done (2026-11-11) and passes all tests under ASan.
+  Claude wrote the Makefile at Zach's request (`make test` passes).
+  Next: the rest of `01-dynarray/WORKBOOK.md` after Part 3.
 
 ## Preferences
 
